@@ -33,7 +33,7 @@ final List<Product> dummyProducts = [
     rating: 4.8,
     description: 'The latest iPhone with advanced camera system, titanium design, and A18 Pro chip.',
     color: Colors.blueGrey.shade100,
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=iPhone+16+Pro',
+    imageUrl: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=600',
   ),
   Product(
     id: 'p2',
@@ -43,7 +43,7 @@ final List<Product> dummyProducts = [
     rating: 4.9,
     description: 'Ultimate Android experience with S-Pen, quad camera setup, and Snapdragon 8 Gen 4.',
     color: Colors.teal.shade100,
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=Samsung+S25+Ultra',
+    imageUrl: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=600',
   ),
   Product(
     id: 'p3',
@@ -53,7 +53,7 @@ final List<Product> dummyProducts = [
     rating: 4.9,
     description: 'Supercharged by M3, incredibly thin and light. Up to 18 hours of battery life.',
     color: Colors.grey.shade300,
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=MacBook+Air+M3',
+    imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=600',
   ),
   Product(
     id: 'p4',
@@ -63,7 +63,7 @@ final List<Product> dummyProducts = [
     rating: 4.7,
     description: 'A perfect balance of power and portability with a stunning OLED display.',
     color: Colors.blueAccent.shade100,
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=Dell+XPS+15',
+    imageUrl: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=600',
   ),
   Product(
     id: 'p5',
@@ -73,7 +73,7 @@ final List<Product> dummyProducts = [
     rating: 4.8,
     description: 'The ultimate iPad experience with M4 chip, OLED display, and all-day battery life.',
     color: Colors.indigo.shade100,
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=iPad+Pro+13',
+    imageUrl: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=600',
   ),
   Product(
     id: 'p6',
@@ -83,7 +83,7 @@ final List<Product> dummyProducts = [
     rating: 4.8,
     description: 'Industry-leading noise cancellation, exceptional sound quality, and comfortable design.',
     color: Colors.black87,
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=Sony+WH-1000XM5',
+    imageUrl: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=600',
   ),
   Product(
     id: 'p7',
@@ -93,7 +93,7 @@ final List<Product> dummyProducts = [
     rating: 4.9,
     description: 'Rich, high-quality audio and magic AirPods experience with next-level active noise cancellation.',
     color: Colors.grey.shade200,
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=AirPods+Pro+2',
+    imageUrl: 'https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?q=80&w=600',
   ),
   Product(
     id: 'p8',
@@ -103,6 +103,6 @@ final List<Product> dummyProducts = [
     rating: 4.8,
     description: 'An iconic mouse remastered. Feel every moment of your workflow with even more precision.',
     color: Colors.blueGrey.shade200,
-    imageUrl: 'https://via.placeholder.com/300x300.png?text=Logitech+MX+Master+3S',
+    imageUrl: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=600',
   ),
 ];

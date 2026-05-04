@@ -38,32 +38,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Hero Image
-            Hero(
-              tag: widget.product.id,
-              child: SizedBox(
-                height: 350,
-                width: double.infinity,
-                child: CachedNetworkImage(
-                  imageUrl: widget.product.imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    highlightColor: Theme.of(context).colorScheme.surface,
-                    child: Container(color: Theme.of(context).colorScheme.surface),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: Icon(Icons.broken_image, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                  ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth >= 800;
+          
+          final heroImage = Hero(
+            tag: widget.product.id,
+            child: SizedBox(
+              height: isWide ? 500 : 350,
+              width: double.infinity,
+              child: CachedNetworkImage(
+                imageUrl: widget.product.imageUrl,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  highlightColor: Theme.of(context).colorScheme.surface,
+                  child: Container(color: Theme.of(context).colorScheme.surface),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  child: Icon(Icons.broken_image, color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ),
             ),
-            Padding(
+          );
+
+          final details = Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,9 +224,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   const SizedBox(height: 40),
                 ],
               ),
-            ),
-          ],
-        ),
+            );
+
+          return SingleChildScrollView(
+            child: isWide 
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(flex: 1, child: heroImage),
+                      Expanded(flex: 1, child: details),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [heroImage, details],
+                  ),
+          );
+        },
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
