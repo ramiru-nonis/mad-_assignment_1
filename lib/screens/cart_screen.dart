@@ -179,11 +179,11 @@ class CartScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            _buildSummaryRow('Subtotal', '\$${subtotal.toStringAsFixed(2)}'),
+            _buildSummaryRow(context, 'Subtotal', '\$${subtotal.toStringAsFixed(2)}'),
             const SizedBox(height: 8),
-            _buildSummaryRow('Shipping', 'Free'),
+            _buildSummaryRow(context, 'Shipping', 'Free'),
             const SizedBox(height: 8),
-            _buildSummaryRow('Tax (8%)', '\$${tax.toStringAsFixed(2)}'),
+            _buildSummaryRow(context, 'Tax (8%)', '\$${tax.toStringAsFixed(2)}'),
             const SizedBox(height: 16),
             const Divider(),
             const SizedBox(height: 16),
@@ -237,7 +237,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryRow(String label, String value) {
+  Widget _buildSummaryRow(BuildContext context, String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

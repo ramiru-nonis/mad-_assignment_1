@@ -24,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             // User Avatar Section
-            const CircleAvatar(
+            CircleAvatar(
               radius: 50,
               backgroundColor: Colors.blueAccent,
               child: Text(
