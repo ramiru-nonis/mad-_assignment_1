@@ -1,153 +1,171 @@
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _pushNotifications = true;
+  bool _emailOffers = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Profile'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {},
-          ),
-        ],
+        elevation: 0,
+        backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Header Section
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24.0),
-              color: Theme.of(context).primaryColor.withOpacity(0.05),
+            // User Avatar Section
+            const CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.blueAccent,
+              child: Text(
+                'AS',
+                style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Aiden Silva',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'aiden.silva@example.com',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey.shade600,
+              ),
+            ),
+            const SizedBox(height: 32),
+
+            // Section 1: Account Info
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.grey.shade200),
+              ),
               child: Column(
                 children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.blueAccent,
-                    child: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.white,
-                    ),
+                  _buildListTile('My Orders', Icons.shopping_bag_outlined),
+                  const Divider(height: 1),
+                  _buildListTile('Saved Addresses', Icons.location_on_outlined),
+                  const Divider(height: 1),
+                  _buildListTile('Payment Methods', Icons.payment_outlined),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Section 2: Preferences
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Preferences',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.grey.shade200),
+              ),
+              child: Column(
+                children: [
+                  SwitchListTile(
+                    title: const Text('Push Notifications'),
+                    secondary: const Icon(Icons.notifications_outlined),
+                    value: _pushNotifications,
+                    activeColor: Theme.of(context).primaryColor,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _pushNotifications = value;
+                      });
+                    },
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'John Doe',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'john.doe@example.com',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: const Text('Edit Profile'),
+                  const Divider(height: 1),
+                  SwitchListTile(
+                    title: const Text('Email Offers'),
+                    secondary: const Icon(Icons.email_outlined),
+                    value: _emailOffers,
+                    activeColor: Theme.of(context).primaryColor,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _emailOffers = value;
+                      });
+                    },
                   ),
                 ],
               ),
             ),
-            
-            // Menu Items Section
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const SizedBox(height: 24),
+
+            // Section 3: Support
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.grey.shade200),
+              ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Account Settings',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildMenuTile(Icons.shopping_bag_outlined, 'My Orders'),
-                  const Divider(),
-                  _buildMenuTile(Icons.location_on_outlined, 'Shipping Addresses'),
-                  const Divider(),
-                  _buildMenuTile(Icons.payment_outlined, 'Payment Methods'),
-                  const SizedBox(height: 24),
-                  
-                  const Text(
-                    'Support & About',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildMenuTile(Icons.help_outline, 'Help & Support'),
-                  const Divider(),
-                  _buildMenuTile(Icons.info_outline, 'About Cellario lite'),
-                  const SizedBox(height: 32),
-                  
-                  // Logout Button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: TextButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.logout, color: Colors.red),
-                      label: const Text(
-                        'Log Out',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.red.withOpacity(0.1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
+                  _buildListTile('Help & Support', Icons.help_outline),
+                  const Divider(height: 1),
+                  _buildListTile('About TechStore', Icons.info_outline),
                 ],
               ),
             ),
+            const SizedBox(height: 32),
+
+            // Log Out Button
+            TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+              ),
+              child: const Text(
+                'Log Out',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildMenuTile(IconData icon, String title) {
+  Widget _buildListTile(String title, IconData icon) {
     return ListTile(
-      contentPadding: EdgeInsets.zero,
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Icon(icon, color: Colors.black87),
-      ),
+      leading: Icon(icon, color: Colors.black87),
       title: Text(
         title,
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 16,
-        ),
+        style: const TextStyle(fontWeight: FontWeight.w500),
       ),
       trailing: const Icon(Icons.chevron_right, color: Colors.grey),
       onTap: () {},
