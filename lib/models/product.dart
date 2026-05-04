@@ -8,6 +8,7 @@ class Product {
   final double rating;
   final String description;
   final Color color;
+  final String imageUrl;
 
   Product({
     required this.id,
@@ -17,6 +18,7 @@ class Product {
     required this.rating,
     required this.description,
     required this.color,
+    required this.imageUrl,
   });
 
   String get formattedPrice => '\$${price.toStringAsFixed(2)}';
@@ -31,6 +33,7 @@ final List<Product> dummyProducts = [
     rating: 4.8,
     description: 'The latest iPhone with advanced camera system, titanium design, and A18 Pro chip.',
     color: Colors.blueGrey.shade100,
+    imageUrl: 'https://via.placeholder.com/300x300.png?text=iPhone+16+Pro',
   ),
   Product(
     id: 'p2',
@@ -40,6 +43,7 @@ final List<Product> dummyProducts = [
     rating: 4.9,
     description: 'Ultimate Android experience with S-Pen, quad camera setup, and Snapdragon 8 Gen 4.',
     color: Colors.teal.shade100,
+    imageUrl: 'https://via.placeholder.com/300x300.png?text=Samsung+S25+Ultra',
   ),
   Product(
     id: 'p3',
@@ -49,6 +53,7 @@ final List<Product> dummyProducts = [
     rating: 4.9,
     description: 'Supercharged by M3, incredibly thin and light. Up to 18 hours of battery life.',
     color: Colors.grey.shade300,
+    imageUrl: 'https://via.placeholder.com/300x300.png?text=MacBook+Air+M3',
   ),
   Product(
     id: 'p4',
@@ -58,6 +63,7 @@ final List<Product> dummyProducts = [
     rating: 4.7,
     description: 'A perfect balance of power and portability with a stunning OLED display.',
     color: Colors.blueAccent.shade100,
+    imageUrl: 'https://via.placeholder.com/300x300.png?text=Dell+XPS+15',
   ),
   Product(
     id: 'p5',
@@ -67,6 +73,7 @@ final List<Product> dummyProducts = [
     rating: 4.8,
     description: 'The ultimate iPad experience with M4 chip, OLED display, and all-day battery life.',
     color: Colors.indigo.shade100,
+    imageUrl: 'https://via.placeholder.com/300x300.png?text=iPad+Pro+13',
   ),
   Product(
     id: 'p6',
@@ -76,6 +83,7 @@ final List<Product> dummyProducts = [
     rating: 4.8,
     description: 'Industry-leading noise cancellation, exceptional sound quality, and comfortable design.',
     color: Colors.black87,
+    imageUrl: 'https://via.placeholder.com/300x300.png?text=Sony+WH-1000XM5',
   ),
   Product(
     id: 'p7',
@@ -85,6 +93,7 @@ final List<Product> dummyProducts = [
     rating: 4.9,
     description: 'Rich, high-quality audio and magic AirPods experience with next-level active noise cancellation.',
     color: Colors.grey.shade200,
+    imageUrl: 'https://via.placeholder.com/300x300.png?text=AirPods+Pro+2',
   ),
   Product(
     id: 'p8',
@@ -94,5 +103,6 @@ final List<Product> dummyProducts = [
     rating: 4.8,
     description: 'An iconic mouse remastered. Feel every moment of your workflow with even more precision.',
     color: Colors.blueGrey.shade200,
+    imageUrl: 'https://via.placeholder.com/300x300.png?text=Logitech+MX+Master+3S',
   ),
 ];

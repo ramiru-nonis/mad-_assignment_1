@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -13,6 +15,7 @@ class CartScreen extends StatelessWidget {
         'price': 999.00,
         'quantity': 1,
         'color': Colors.blueGrey.shade100,
+        'imageUrl': 'https://via.placeholder.com/300x300.png?text=iPhone+16+Pro',
       },
       {
         'name': 'AirPods Pro 2nd Gen',
@@ -20,6 +23,7 @@ class CartScreen extends StatelessWidget {
         'price': 249.00,
         'quantity': 1,
         'color': Colors.grey.shade200,
+        'imageUrl': 'https://via.placeholder.com/300x300.png?text=AirPods+Pro+2',
       },
       {
         'name': 'Apple Watch Series 10',
@@ -27,6 +31,7 @@ class CartScreen extends StatelessWidget {
         'price': 399.00,
         'quantity': 1,
         'color': Colors.pinkAccent.shade100,
+        'imageUrl': 'https://via.placeholder.com/300x300.png?text=Apple+Watch+10',
       },
     ];
 
@@ -63,14 +68,25 @@ class CartScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Product Image Placeholder
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: item['color'],
-                        borderRadius: BorderRadius.circular(12),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: CachedNetworkImage(
+                          imageUrl: item['imageUrl'],
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Shimmer.fromColors(
+                            baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                            highlightColor: Theme.of(context).colorScheme.surface,
+                            child: Container(color: Theme.of(context).colorScheme.surface),
+                          ),
+                          errorWidget: (context, url, error) => Container(
+                            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                            child: Icon(Icons.broken_image, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                          ),
+                        ),
                       ),
-                      child: const Icon(Icons.devices, color: Colors.black26),
                     ),
                     const SizedBox(width: 16),
                     // Product Details
@@ -89,7 +105,7 @@ class CartScreen extends StatelessWidget {
                           Text(
                             item['variant'],
                             style: TextStyle(
-                              color: Colors.grey.shade600,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                               fontSize: 13,
                             ),
                           ),
@@ -227,9 +243,9 @@ class CartScreen extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 15,
-            color: Colors.grey,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
         Text(

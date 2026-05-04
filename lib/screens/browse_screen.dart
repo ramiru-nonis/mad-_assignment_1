@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 import '../models/product.dart';
 import 'product_detail_screen.dart';
 
@@ -78,14 +80,21 @@ class _BrowseScreenState extends State<BrowseScreen> {
                             // Hero Image Placeholder
                             Hero(
                               tag: product.id,
-                              child: Container(
+                              child: SizedBox(
                                 height: 120,
                                 width: double.infinity,
-                                color: product.color,
-                                child: const Icon(
-                                  Icons.devices,
-                                  size: 40,
-                                  color: Colors.black26,
+                                child: CachedNetworkImage(
+                                  imageUrl: product.imageUrl,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Shimmer.fromColors(
+                                    baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                    highlightColor: Theme.of(context).colorScheme.surface,
+                                    child: Container(color: Theme.of(context).colorScheme.surface),
+                                  ),
+                                  errorWidget: (context, url, error) => Container(
+                                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                    child: Icon(Icons.broken_image, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                                  ),
                                 ),
                               ),
                             ),
@@ -98,14 +107,14 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
+                                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(
                                       product.category,
                                       style: TextStyle(
                                         fontSize: 10,
-                                        color: Colors.grey.shade700,
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -113,9 +122,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                   const SizedBox(height: 6),
                                   Text(
                                     product.name,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
+                                      color: Theme.of(context).colorScheme.onSurface,
                                     ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -136,7 +146,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                       const SizedBox(width: 4),
                                       Text(
                                         product.rating.toString(),
-                                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                        style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
                                       ),
                                     ],
                                   ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,24 +26,28 @@ class _HomeScreenState extends State<HomeScreen> {
       'price': '\$999',
       'rating': 4.8,
       'color': Colors.blueGrey.shade100,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=iPhone+16+Pro',
     },
     {
       'name': 'Samsung Galaxy S25 Ultra',
       'price': '\$1,199',
       'rating': 4.9,
       'color': Colors.teal.shade100,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Samsung+S25+Ultra',
     },
     {
       'name': 'MacBook Air M3',
       'price': '\$1,099',
       'rating': 4.9,
       'color': Colors.grey.shade300,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=MacBook+Air+M3',
     },
     {
       'name': 'iPad Pro 13"',
       'price': '\$1,299',
       'rating': 4.8,
       'color': Colors.indigo.shade100,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=iPad+Pro+13',
     },
   ];
 
@@ -52,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'price': '\$398',
       'description': 'Industry leading noise canceling headphones.',
       'color': Colors.black87,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Sony+WH-1000XM5',
     },
     {
       'name': 'Apple Watch Series 10',
@@ -59,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'price': '\$399',
       'description': 'Advanced health tracking and larger display.',
       'color': Colors.pinkAccent.shade100,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Apple+Watch+10',
     },
     {
       'name': 'Dell XPS 15',
@@ -66,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'price': '\$1,499',
       'description': 'Powerful 15-inch laptop for creators.',
       'color': Colors.blueAccent.shade100,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Dell+XPS+15',
     },
     {
       'name': 'Logitech MX Master 3S',
@@ -73,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'price': '\$99',
       'description': 'Advanced wireless mouse for productivity.',
       'color': Colors.blueGrey.shade200,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Logitech+MX+Master+3S',
     },
     {
       'name': 'Samsung 65" QLED TV',
@@ -80,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'price': '\$1,299',
       'description': 'Stunning 4K resolution with Quantum Dot technology.',
       'color': Colors.deepPurple.shade100,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Samsung+QLED+TV',
     },
     {
       'name': 'DJI Mini 4 Pro',
@@ -87,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'price': '\$759',
       'description': 'Lightweight drone with omnidirectional obstacle sensing.',
       'color': Colors.orange.shade200,
+      'imageUrl': 'https://via.placeholder.com/300x300.png?text=DJI+Mini+4+Pro',
     },
   ];
 
@@ -216,14 +228,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
+                          SizedBox(
                             height: 140,
                             width: double.infinity,
-                            color: product['color'],
-                            child: const Icon(
-                              Icons.devices,
-                              size: 48,
-                              color: Colors.black26,
+                            child: CachedNetworkImage(
+                              imageUrl: product['imageUrl'],
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Shimmer.fromColors(
+                                baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                highlightColor: Theme.of(context).colorScheme.surface,
+                                child: Container(color: Theme.of(context).colorScheme.surface),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                child: Icon(Icons.broken_image, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                              ),
                             ),
                           ),
                           Padding(
@@ -233,8 +252,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Text(
                                   product['name'],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).colorScheme.onSurface,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -254,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const SizedBox(width: 4),
                                     Text(
                                       product['rating'].toString(),
-                                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                      style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
                                     ),
                                   ],
                                 ),
@@ -333,16 +353,24 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: product['color'],
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: const Icon(
-                Icons.image_outlined,
-                color: Colors.white70,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: SizedBox(
+                width: 80,
+                height: 80,
+                child: CachedNetworkImage(
+                  imageUrl: product['imageUrl'],
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    highlightColor: Theme.of(context).colorScheme.surface,
+                    child: Container(color: Theme.of(context).colorScheme.surface),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: Icon(Icons.broken_image, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 16),
@@ -352,9 +380,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     product['name'],
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -362,16 +391,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 4),
                   Text(
                     product['category'],
-                    style: const TextStyle(
-                      color: Colors.grey,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     product['description'],
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
