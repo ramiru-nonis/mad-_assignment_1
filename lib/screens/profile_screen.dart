@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
+import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -27,24 +30,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
             CircleAvatar(
               radius: 50,
               backgroundColor: Colors.blueAccent,
-              child: Text(
-                'AS',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onPrimary,
+              child: Consumer<AuthProvider>(
+                builder: (context, auth, _) => Text(
+                  auth.userName.isNotEmpty ? auth.userName.substring(0, 2).toUpperCase() : 'AS',
+                  style: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Chethana nonis',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Consumer<AuthProvider>(
+              builder: (context, auth, _) => Text(
+                auth.userName.isNotEmpty ? auth.userName : 'Chethana nonis',
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 4),
-            Text(
-              'aiden.silva@example.com',
-              style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurfaceVariant),
+            Consumer<AuthProvider>(
+              builder: (context, auth, _) => Text(
+                auth.userEmail.isNotEmpty ? auth.userEmail : 'aiden.silva@example.com',
+                style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurfaceVariant),
+              ),
             ),
             const SizedBox(height: 32),
 
@@ -131,7 +140,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             // Log Out Button
             TextButton(
-              onPressed: () {},
+              onPressed: () async {
+                final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                await authProvider.logout();
+                if (context.mounted) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    (route) => false,
+                  );
+                }
+              },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.red,
                 padding: const EdgeInsets.symmetric(

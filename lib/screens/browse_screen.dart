@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
-import '../models/product.dart';
+import 'package:provider/provider.dart';
+import '../providers/product_provider.dart';
 import 'product_detail_screen.dart';
 
 class BrowseScreen extends StatefulWidget {
@@ -12,23 +13,11 @@ class BrowseScreen extends StatefulWidget {
 }
 
 class _BrowseScreenState extends State<BrowseScreen> {
-  String _selectedCategory = 'All';
-  
-  final List<String> _categories = [
-    'All',
-    'Smartphones',
-    'Laptops',
-    'Tablets',
-    'Accessories',
-    'Audio'
-  ];
-
   @override
   Widget build(BuildContext context) {
-    // Filter products
-    final filteredProducts = _selectedCategory == 'All' 
-        ? dummyProducts 
-        : dummyProducts.where((p) => p.category == _selectedCategory).toList();
+    final productProvider = Provider.of<ProductProvider>(context);
+    final categories = productProvider.categories;
+    final filteredProducts = productProvider.filteredProducts;
 
     return Scaffold(
       appBar: AppBar(
@@ -175,10 +164,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
                     ),
                   ),
                   child: ListView.builder(
-                    itemCount: _categories.length,
+                    itemCount: categories.length,
                     itemBuilder: (context, index) {
-                      final category = _categories[index];
-                      final isSelected = _selectedCategory == category;
+                      final category = categories[index];
+                      final isSelected = productProvider.selectedCategory == category;
                       return ListTile(
                         title: Text(
                           category,
@@ -190,9 +179,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                         selectedTileColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                         selectedColor: Theme.of(context).primaryColor,
                         onTap: () {
-                          setState(() {
-                            _selectedCategory = category;
-                          });
+                          productProvider.selectCategory(category);
                         },
                       );
                     },
@@ -212,18 +199,16 @@ class _BrowseScreenState extends State<BrowseScreen> {
                   child: ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     scrollDirection: Axis.horizontal,
-                    itemCount: _categories.length,
+                    itemCount: categories.length,
                     separatorBuilder: (context, index) => const SizedBox(width: 8),
                     itemBuilder: (context, index) {
-                      final category = _categories[index];
+                      final category = categories[index];
                       return FilterChip(
                         label: Text(category),
-                        selected: _selectedCategory == category,
+                        selected: productProvider.selectedCategory == category,
                         onSelected: (bool selected) {
                           if (selected) {
-                            setState(() {
-                              _selectedCategory = category;
-                            });
+                            productProvider.selectCategory(category);
                           }
                         },
                         selectedColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),

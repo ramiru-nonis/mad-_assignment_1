@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 import 'register_screen.dart';
+import 'main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Your tech, delivered.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -74,8 +77,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Login action placeholder
+                    onPressed: () async {
+                      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                      // Simulating getting text from controllers
+                      bool success = await authProvider.login('user@example.com', 'password');
+                      if (success && context.mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MainScreen()),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,

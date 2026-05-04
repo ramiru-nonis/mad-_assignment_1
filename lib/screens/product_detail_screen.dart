@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:provider/provider.dart';
+import '../providers/cart_provider.dart';
 import '../models/product.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -269,7 +271,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 child: SizedBox(
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<CartProvider>(context, listen: false).addToCart(widget.product);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Added to cart!')),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
                       foregroundColor: Colors.white,

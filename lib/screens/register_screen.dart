@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
+import 'main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -105,10 +108,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: null, // null makes it disabled
+                  onPressed: () async {
+                    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                    bool success = await authProvider.login('user@example.com', 'password');
+                    if (success && context.mounted) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MainScreen()),
+                        (route) => false,
+                      );
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    disabledForegroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   ),
                   child: const Text('Create Account', style: TextStyle(fontSize: 18)),
                 ),

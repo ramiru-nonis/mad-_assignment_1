@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:provider/provider.dart';
+import '../providers/product_provider.dart';
+import '../providers/cart_provider.dart';
+import '../models/product.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,98 +24,22 @@ class _HomeScreenState extends State<HomeScreen> {
     'Accessories'
   ];
 
-  final List<Map<String, dynamic>> _featuredProducts = [
-    {
-      'name': 'iPhone 16 Pro',
-      'price': '\$999',
-      'rating': 4.8,
-      'color': Colors.blueGrey.shade100,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=iPhone+16+Pro',
-    },
-    {
-      'name': 'Samsung Galaxy S25 Ultra',
-      'price': '\$1,199',
-      'rating': 4.9,
-      'color': Colors.teal.shade100,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Samsung+S25+Ultra',
-    },
-    {
-      'name': 'MacBook Air M3',
-      'price': '\$1,099',
-      'rating': 4.9,
-      'color': Colors.grey.shade300,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=MacBook+Air+M3',
-    },
-    {
-      'name': 'iPad Pro 13"',
-      'price': '\$1,299',
-      'rating': 4.8,
-      'color': Colors.indigo.shade100,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=iPad+Pro+13',
-    },
-  ];
-
-  final List<Map<String, dynamic>> _bestSellers = [
-    {
-      'name': 'Sony WH-1000XM5',
-      'category': 'Accessories',
-      'price': '\$398',
-      'description': 'Industry leading noise canceling headphones.',
-      'color': Colors.black87,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Sony+WH-1000XM5',
-    },
-    {
-      'name': 'Apple Watch Series 10',
-      'category': 'Wearables',
-      'price': '\$399',
-      'description': 'Advanced health tracking and larger display.',
-      'color': Colors.pinkAccent.shade100,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Apple+Watch+10',
-    },
-    {
-      'name': 'Dell XPS 15',
-      'category': 'Laptops',
-      'price': '\$1,499',
-      'description': 'Powerful 15-inch laptop for creators.',
-      'color': Colors.blueAccent.shade100,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Dell+XPS+15',
-    },
-    {
-      'name': 'Logitech MX Master 3S',
-      'category': 'Accessories',
-      'price': '\$99',
-      'description': 'Advanced wireless mouse for productivity.',
-      'color': Colors.blueGrey.shade200,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Logitech+MX+Master+3S',
-    },
-    {
-      'name': 'Samsung 65" QLED TV',
-      'category': 'Televisions',
-      'price': '\$1,299',
-      'description': 'Stunning 4K resolution with Quantum Dot technology.',
-      'color': Colors.deepPurple.shade100,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=Samsung+QLED+TV',
-    },
-    {
-      'name': 'DJI Mini 4 Pro',
-      'category': 'Drones',
-      'price': '\$759',
-      'description': 'Lightweight drone with omnidirectional obstacle sensing.',
-      'color': Colors.orange.shade200,
-      'imageUrl': 'https://via.placeholder.com/300x300.png?text=DJI+Mini+4+Pro',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
+    final featuredProducts = productProvider.featuredProducts;
+    final bestSellers = productProvider.bestSellers;
+    final cartItemCount = context.watch<CartProvider>().itemCount;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cellario lite'),
         actions: [
           IconButton(
-            icon: const Badge(
-              label: Text('2'),
-              child: Icon(Icons.shopping_cart),
+            icon: Badge(
+              label: Text(cartItemCount.toString()),
+              isLabelVisible: cartItemCount > 0,
+              child: const Icon(Icons.shopping_cart),
             ),
             onPressed: () {},
           ),
@@ -214,10 +142,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView.separated(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 scrollDirection: Axis.horizontal,
-                itemCount: _featuredProducts.length,
+                itemCount: featuredProducts.length,
                 separatorBuilder: (context, index) => const SizedBox(width: 16),
                 itemBuilder: (context, index) {
-                  final product = _featuredProducts[index];
+                  final product = featuredProducts[index];
                   return SizedBox(
                     width: 160,
                     child: Card(
@@ -232,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 140,
                             width: double.infinity,
                             child: CachedNetworkImage(
-                              imageUrl: product['imageUrl'],
+                              imageUrl: product.imageUrl,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Shimmer.fromColors(
                                 baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
@@ -251,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  product['name'],
+                                  product.name,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Theme.of(context).colorScheme.onSurface,
@@ -261,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  product['price'],
+                                  product.formattedPrice,
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.bold,
@@ -273,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const Icon(Icons.star, size: 14, color: Colors.amber),
                                     const SizedBox(width: 4),
                                     Text(
-                                      product['rating'].toString(),
+                                      product.rating.toString(),
                                       style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
                                     ),
                                   ],
@@ -313,11 +241,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 12,
-                      mainAxisExtent: 104,
+                      mainAxisExtent: 120,
                     ),
-                    itemCount: _bestSellers.length,
+                    itemCount: bestSellers.length,
                     itemBuilder: (context, index) {
-                      return _buildBestSellerCard(context, _bestSellers[index]);
+                      return _buildBestSellerCard(context, bestSellers[index]);
                     },
                   );
                 } else {
@@ -325,11 +253,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _bestSellers.length,
+                    itemCount: bestSellers.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),
-                        child: _buildBestSellerCard(context, _bestSellers[index]),
+                        child: _buildBestSellerCard(context, bestSellers[index]),
                       );
                     },
                   );
@@ -342,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBestSellerCard(BuildContext context, Map<String, dynamic> product) {
+  Widget _buildBestSellerCard(BuildContext context, Product product) {
     return Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
@@ -359,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 80,
                 height: 80,
                 child: CachedNetworkImage(
-                  imageUrl: product['imageUrl'],
+                  imageUrl: product.imageUrl,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Shimmer.fromColors(
                     baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
@@ -379,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product['name'],
+                    product.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -390,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    product['category'],
+                    product.category,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12,
@@ -398,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    product['description'],
+                    product.description,
                     style: TextStyle(
                       fontSize: 13,
                       color: Theme.of(context).colorScheme.onSurface,
@@ -411,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(width: 8),
             Text(
-              product['price'],
+              product.formattedPrice,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).primaryColor,
