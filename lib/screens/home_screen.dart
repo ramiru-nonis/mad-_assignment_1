@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:provider/provider.dart';
 import '../providers/product_provider.dart';
-import '../providers/cart_provider.dart';
+
 import '../models/product.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,21 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final productProvider = Provider.of<ProductProvider>(context);
     final featuredProducts = productProvider.featuredProducts;
     final bestSellers = productProvider.bestSellers;
-    final cartItemCount = context.watch<CartProvider>().itemCount;
+
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cellario lite'),
-        actions: [
-          IconButton(
-            icon: Badge(
-              label: Text(cartItemCount.toString()),
-              isLabelVisible: cartItemCount > 0,
-              child: const Icon(Icons.shopping_cart),
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 16.0),

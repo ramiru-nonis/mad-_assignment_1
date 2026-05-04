@@ -195,32 +195,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   _buildSpecRow(Icons.camera, 'Camera', '48MP Main / 12MP Ultra-wide'),
                   const SizedBox(height: 32),
 
-                  // Customer Reviews
-                  const Text(
-                    'Customer Reviews',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildReviewTile(
-                    'Alex Johnson', 
-                    5, 
-                    'Absolutely incredible! The battery lasts all day and the performance is unmatched. Highly recommend to anyone upgrading.',
-                  ),
-                  const SizedBox(height: 16),
-                  _buildReviewTile(
-                    'Sarah Williams', 
-                    4, 
-                    'Great product overall. The display is gorgeous. Only gave it 4 stars because the delivery took an extra day.',
-                  ),
-                  const SizedBox(height: 16),
-                  _buildReviewTile(
-                    'Michael Davis', 
-                    5, 
-                    'Best purchase I\'ve made this year. The camera quality is mind-blowing. Worth every penny!',
-                  ),
                   const SizedBox(height: 40),
                 ],
               ),
@@ -335,52 +309,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildReviewTile(String name, int stars, String comment) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-              Row(
-                children: List.generate(5, (index) {
-                  return Icon(
-                    index < stars ? Icons.star : Icons.star_border,
-                    size: 16,
-                    color: Colors.amber,
-                  );
-                }),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            comment,
-            style: TextStyle(
-              fontSize: 14,
-              color: Theme.of(context).colorScheme.onSurface,
-              height: 1.4,
             ),
           ),
         ],
