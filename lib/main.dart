@@ -5,6 +5,7 @@ import 'screens/login_screen.dart';
 import 'providers/auth_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/cart_provider.dart';
+import 'providers/theme_provider.dart';
 
 // this is the main method which runs app
 
@@ -23,11 +24,14 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
-      child: MaterialApp(
-        title: 'Cellario Lite',
-        themeMode: ThemeMode.system,
-        theme: ThemeData(
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, _) {
+          return MaterialApp(
+            title: 'Cellario Lite',
+            themeMode: themeProvider.themeMode,
+            theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
           textTheme: GoogleFonts.robotoTextTheme(
@@ -46,6 +50,8 @@ class MainApp extends StatelessWidget {
         ),
         home: const LoginScreen(), 
         debugShowCheckedModeBanner: false,
+          );
+        },
       ),
     );
   }

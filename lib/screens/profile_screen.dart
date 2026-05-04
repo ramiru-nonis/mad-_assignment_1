@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../providers/theme_provider.dart';
 import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -146,6 +147,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+              ),
+              child: Consumer<ThemeProvider>(
+                builder: (context, themeProvider, _) => SwitchListTile(
+                  title: const Text('Dark Mode'),
+                  secondary: const Icon(Icons.dark_mode_outlined),
+                  value: themeProvider.isDarkMode,
+                  activeThumbColor: Theme.of(context).primaryColor,
+                  onChanged: (bool value) {
+                    themeProvider.toggleTheme(value);
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 24),
