@@ -38,141 +38,198 @@ class _BrowseScreenState extends State<BrowseScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Filter Chips row
-          SizedBox(
-            height: 50,
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              scrollDirection: Axis.horizontal,
-              itemCount: _categories.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 8),
-              itemBuilder: (context, index) {
-                final category = _categories[index];
-                return FilterChip(
-                  label: Text(category),
-                  selected: _selectedCategory == category,
-                  onSelected: (bool selected) {
-                    if (selected) {
-                      setState(() {
-                        _selectedCategory = category;
-                      });
-                    }
-                  },
-                  selectedColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
-                );
-              },
-            ),
-          ),
-          
-          // Grid View
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16.0),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.7,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemCount: filteredProducts.length,
-              itemBuilder: (context, index) {
-                final product = filteredProducts[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductDetailScreen(product: product),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    clipBehavior: Clip.antiAlias,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Hero Image Placeholder
-                        Hero(
-                          tag: product.id,
-                          child: Container(
-                            height: 120,
-                            width: double.infinity,
-                            color: product.color,
-                            child: const Icon(
-                              Icons.devices,
-                              size: 40,
-                              color: Colors.black26,
-                            ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final bool isTablet = constraints.maxWidth >= 600;
+
+          Widget buildGrid() {
+            return OrientationBuilder(
+              builder: (context, orientation) {
+                final int crossAxisCount = orientation == Orientation.portrait ? 2 : 4;
+                return GridView.builder(
+                  padding: const EdgeInsets.all(16.0),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: 0.7,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemCount: filteredProducts.length,
+                  itemBuilder: (context, index) {
+                    final product = filteredProducts[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailScreen(product: product),
                           ),
+                        );
+                      },
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Category Badge
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(
-                                  product.category,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey.shade700,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                        elevation: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Hero Image Placeholder
+                            Hero(
+                              tag: product.id,
+                              child: Container(
+                                height: 120,
+                                width: double.infinity,
+                                color: product.color,
+                                child: const Icon(
+                                  Icons.devices,
+                                  size: 40,
+                                  color: Colors.black26,
                                 ),
                               ),
-                              const SizedBox(height: 6),
-                              Text(
-                                product.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                product.formattedPrice,
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(Icons.star, size: 14, color: Colors.amber),
-                                  const SizedBox(width: 4),
+                                  // Category Badge
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      product.category,
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.grey.shade700,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
                                   Text(
-                                    product.rating.toString(),
-                                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                    product.name,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    product.formattedPrice,
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.star, size: 14, color: Colors.amber),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        product.rating.toString(),
+                                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 );
               },
-            ),
-          ),
-        ],
+            );
+          }
+
+          if (isTablet) {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 200,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      right: BorderSide(color: Colors.grey.shade300),
+                    ),
+                  ),
+                  child: ListView.builder(
+                    itemCount: _categories.length,
+                    itemBuilder: (context, index) {
+                      final category = _categories[index];
+                      final isSelected = _selectedCategory == category;
+                      return ListTile(
+                        title: Text(
+                          category,
+                          style: TextStyle(
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          ),
+                        ),
+                        selected: isSelected,
+                        selectedTileColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                        selectedColor: Theme.of(context).primaryColor,
+                        onTap: () {
+                          setState(() {
+                            _selectedCategory = category;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: buildGrid(),
+                ),
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                // Filter Chips row
+                SizedBox(
+                  height: 50,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _categories.length,
+                    separatorBuilder: (context, index) => const SizedBox(width: 8),
+                    itemBuilder: (context, index) {
+                      final category = _categories[index];
+                      return FilterChip(
+                        label: Text(category),
+                        selected: _selectedCategory == category,
+                        onSelected: (bool selected) {
+                          if (selected) {
+                            setState(() {
+                              _selectedCategory = category;
+                            });
+                          }
+                        },
+                        selectedColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
+                      );
+                    },
+                  ),
+                ),
+                
+                // Grid View
+                Expanded(
+                  child: buildGrid(),
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }

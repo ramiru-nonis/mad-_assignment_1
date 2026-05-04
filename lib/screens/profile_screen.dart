@@ -38,19 +38,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 16),
             const Text(
-              'Aiden Silva',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              'Chethana nonis',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             Text(
               'aiden.silva@example.com',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
             ),
             const SizedBox(height: 32),
 
@@ -78,10 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Preferences',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 12),
@@ -143,14 +134,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {},
               style: TextButton.styleFrom(
                 foregroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 32,
+                ),
               ),
               child: const Text(
                 'Log Out',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 40),
@@ -163,10 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildListTile(String title, IconData icon) {
     return ListTile(
       leading: Icon(icon, color: Colors.black87),
-      title: Text(
-        title,
-        style: const TextStyle(fontWeight: FontWeight.w500),
-      ),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
       trailing: const Icon(Icons.chevron_right, color: Colors.grey),
       onTap: () {},
     );
