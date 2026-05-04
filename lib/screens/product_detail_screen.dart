@@ -68,7 +68,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(0.1),
+                          color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Text(
@@ -144,7 +144,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               });
                             }
                           },
-                          selectedColor: Theme.of(context).primaryColor.withOpacity(0.2),
+                          selectedColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
                         );
                       },
                     ),
@@ -161,8 +161,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    widget.product.description + 
-                    ' Designed to deliver an unparalleled experience with industry-leading performance and battery life. Perfect for professionals and power users who demand the best from their tech.',
+                    '${widget.product.description} Designed to deliver an unparalleled experience with industry-leading performance and battery life. Perfect for professionals and power users who demand the best from their tech.',
                     style: const TextStyle(
                       fontSize: 15,
                       color: Colors.black87,
@@ -229,7 +228,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, -5),
               ),

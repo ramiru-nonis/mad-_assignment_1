@@ -76,7 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   prefixIcon: Icon(Icons.public),
                   border: OutlineInputBorder(),
                 ),
-                value: _selectedCountry,
+                initialValue: _selectedCountry,
                 items: _countries.map((String country) {
                   return DropdownMenuItem<String>(
                     value: country,

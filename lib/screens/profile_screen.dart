@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: const Text('Push Notifications'),
                     secondary: const Icon(Icons.notifications_outlined),
                     value: _pushNotifications,
-                    activeColor: Theme.of(context).primaryColor,
+                    activeThumbColor: Theme.of(context).primaryColor,
                     onChanged: (bool value) {
                       setState(() {
                         _pushNotifications = value;
@@ -109,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: const Text('Email Offers'),
                     secondary: const Icon(Icons.email_outlined),
                     value: _emailOffers,
-                    activeColor: Theme.of(context).primaryColor,
+                    activeThumbColor: Theme.of(context).primaryColor,
                     onChanged: (bool value) {
                       setState(() {
                         _emailOffers = value;
