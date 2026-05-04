@@ -11,8 +11,30 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  bool _pushNotifications = true;
-  bool _emailOffers = false;
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  late TextEditingController _addressController;
+
+  @override
+  void initState() {
+    super.initState();
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    _nameController = TextEditingController(text: auth.userName.isNotEmpty ? auth.userName : 'Chethana Nonis');
+    _emailController = TextEditingController(text: auth.userEmail.isNotEmpty ? auth.userEmail : 'chethana@example.com');
+    _phoneController = TextEditingController(text: '+94 77 123 4567');
+    _addressController = TextEditingController(text: '123 Main Street, Colombo 07');
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _addressController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,86 +79,76 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 32),
 
-            // Section 1: Account Info
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
-              ),
+            const SizedBox(height: 16),
+            Form(
+              key: _formKey,
               child: Column(
                 children: [
-                  _buildListTile('My Orders', Icons.shopping_bag_outlined),
-                  const Divider(height: 1),
-                  _buildListTile('Saved Addresses', Icons.location_on_outlined),
-                  const Divider(height: 1),
-                  _buildListTile('Payment Methods', Icons.payment_outlined),
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Full Name',
+                      prefixIcon: Icon(Icons.person_outline),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email Address',
+                      prefixIcon: Icon(Icons.email_outlined),
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: const InputDecoration(
+                      labelText: 'Phone Number',
+                      prefixIcon: Icon(Icons.phone_outlined),
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.phone,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _addressController,
+                    decoration: const InputDecoration(
+                      labelText: 'Shipping Address',
+                      prefixIcon: Icon(Icons.location_on_outlined),
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: 32),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Profile saved successfully!')),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'Save Profile',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 24),
-
-            // Section 2: Preferences
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Preferences',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 12),
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
-              ),
-              child: Column(
-                children: [
-                  SwitchListTile(
-                    title: const Text('Push Notifications'),
-                    secondary: const Icon(Icons.notifications_outlined),
-                    value: _pushNotifications,
-                    activeThumbColor: Theme.of(context).primaryColor,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _pushNotifications = value;
-                      });
-                    },
-                  ),
-                  const Divider(height: 1),
-                  SwitchListTile(
-                    title: const Text('Email Offers'),
-                    secondary: const Icon(Icons.email_outlined),
-                    value: _emailOffers,
-                    activeThumbColor: Theme.of(context).primaryColor,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _emailOffers = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Section 3: Support
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
-              ),
-              child: Column(
-                children: [
-                  _buildListTile('Help & Support', Icons.help_outline),
-                  const Divider(height: 1),
-                  _buildListTile('About TechStore', Icons.info_outline),
-                ],
-              ),
-            ),
-            const SizedBox(height: 32),
 
             // Log Out Button
             TextButton(
@@ -170,12 +182,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildListTile(String title, IconData icon) {
-    return ListTile(
-      leading: Icon(icon, color: Theme.of(context).colorScheme.onSurface),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-      trailing: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurfaceVariant),
-      onTap: () {},
-    );
-  }
 }
+
