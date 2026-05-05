@@ -32,10 +32,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             icon: const Icon(Icons.favorite_border),
             onPressed: () {},
           ),
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {},
-          ),
         ],
       ),
       body: LayoutBuilder(
@@ -85,19 +81,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.star, color: Colors.amber, size: 20),
-                          const SizedBox(width: 4),
-                          Text(
-                            widget.product.rating.toString(),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
