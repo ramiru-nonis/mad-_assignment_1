@@ -195,11 +195,9 @@ class CartScreen extends StatelessWidget {
             // Checkout Button
             SizedBox(
               height: 50,
-              child: ElevatedButton(
+              child: FilledButton(
                 onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white,
+                style: FilledButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

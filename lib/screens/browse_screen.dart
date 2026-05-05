@@ -20,10 +20,24 @@ class _BrowseScreenState extends State<BrowseScreen> {
     final filteredProducts = productProvider.filteredProducts;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Browse'),
-      ),
-      body: LayoutBuilder(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SearchBar(
+                hintText: 'Search products...',
+                leading: const Icon(Icons.search),
+                padding: const WidgetStatePropertyAll<EdgeInsets>(
+                  EdgeInsets.symmetric(horizontal: 16.0),
+                ),
+                onChanged: (value) {
+                  // TODO: Implement search filtering
+                },
+              ),
+            ),
+            Expanded(
+              child: LayoutBuilder(
         builder: (context, constraints) {
           final bool isTablet = constraints.maxWidth >= 600;
 
@@ -219,6 +233,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
             );
           }
         },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

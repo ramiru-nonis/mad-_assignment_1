@@ -241,16 +241,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 flex: 2,
                 child: SizedBox(
                   height: 50,
-                  child: ElevatedButton(
+                  child: FilledButton(
                     onPressed: () {
                       Provider.of<CartProvider>(context, listen: false).addToCart(widget.product);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Added to cart!')),
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      foregroundColor: Colors.white,
+                    style: FilledButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
