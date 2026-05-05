@@ -12,10 +12,8 @@ void main() {
   runApp(const MainApp());
 }
 
-// material app
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -26,11 +24,31 @@ class MainApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Cellario Lite',
+        themeMode: ThemeMode.system, // Follows device setting
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blueAccent,
+            brightness: Brightness.light,
+          ),
+          textTheme: GoogleFonts.robotoTextTheme(),
+          appBarTheme: const AppBarTheme(
+            centerTitle: true,
+            scrolledUnderElevation: 0,
+          ),
+        ),
+        darkTheme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blueAccent,
+            brightness: Brightness.dark,
+          ),
           textTheme: GoogleFonts.robotoTextTheme(
-            ThemeData.light().textTheme,
+            ThemeData.dark().textTheme,
+          ),
+          appBarTheme: const AppBarTheme(
+            centerTitle: true,
+            scrolledUnderElevation: 0,
           ),
         ),
         home: const LoginScreen(), 

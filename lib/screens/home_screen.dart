@@ -64,19 +64,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'New Arrivals',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.onPrimary,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 8),
-                          const Text(
+                          Text(
                             'iPhone 16 Pro & Samsung S25 Ultra now in stock',
                             style: TextStyle(
-                              color: Colors.white70,
+                              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
                               fontSize: 16,
                             ),
                           ),
@@ -170,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         placeholder: (context, url) => Shimmer.fromColors(
                                           baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                                           highlightColor: Theme.of(context).colorScheme.surface,
-                                          child: Container(color: Colors.white),
+                                          child: Container(color: Theme.of(context).colorScheme.surface),
                                         ),
                                       ),
                                     ),

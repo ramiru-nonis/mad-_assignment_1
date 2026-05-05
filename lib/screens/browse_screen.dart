@@ -168,7 +168,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                   width: 200,
                   decoration: BoxDecoration(
                     border: Border(
-                      right: BorderSide(color: Colors.grey.shade300),
+                      right: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
                     ),
                   ),
                   child: ListView.builder(
