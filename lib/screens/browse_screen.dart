@@ -22,12 +22,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Browse'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
