@@ -32,7 +32,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                   EdgeInsets.symmetric(horizontal: 16.0),
                 ),
                 onChanged: (value) {
-                  // TODO: Implement search filtering
+                  productProvider.setSearchQuery(value);
                 },
               ),
             ),

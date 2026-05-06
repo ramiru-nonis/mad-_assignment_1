@@ -4,8 +4,12 @@ import '../models/product.dart';
 class ProductProvider with ChangeNotifier {
   final List<Product> _products = dummyProducts;
   String _selectedCategory = 'All';
+  String _searchQuery = '';
+  final List<String> _favoriteIds = [];
 
   List<Product> get allProducts => _products;
+
+  List<Product> get favorites => _products.where((p) => _favoriteIds.contains(p.id)).toList();
 
   List<String> get categories {
     final Set<String> uniqueCategories = {'All'};
@@ -16,17 +20,25 @@ class ProductProvider with ChangeNotifier {
   }
 
   String get selectedCategory => _selectedCategory;
+  String get searchQuery => _searchQuery;
 
   void selectCategory(String category) {
     _selectedCategory = category;
     notifyListeners();
   }
 
+  void setSearchQuery(String query) {
+    _searchQuery = query;
+    notifyListeners();
+  }
+
   List<Product> get filteredProducts {
-    if (_selectedCategory == 'All') {
-      return _products;
-    }
-    return _products.where((p) => p.category == _selectedCategory).toList();
+    return _products.where((p) {
+      final matchesCategory = _selectedCategory == 'All' || p.category == _selectedCategory;
+      final matchesSearch = p.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                            p.category.toLowerCase().contains(_searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    }).toList();
   }
 
   List<Product> get featuredProducts {
@@ -43,5 +55,18 @@ class ProductProvider with ChangeNotifier {
     } catch (e) {
       return null;
     }
+  }
+
+  void toggleFavorite(String productId) {
+    if (_favoriteIds.contains(productId)) {
+      _favoriteIds.remove(productId);
+    } else {
+      _favoriteIds.add(productId);
+    }
+    notifyListeners();
+  }
+
+  bool isFavorite(String productId) {
+    return _favoriteIds.contains(productId);
   }
 }

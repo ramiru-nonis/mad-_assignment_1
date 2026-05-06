@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'browse_screen.dart';
+import 'favorites_screen.dart';
 import 'cart_screen.dart';
 import 'profile_screen.dart';
 
@@ -17,6 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = const [
     HomeScreen(),
     BrowseScreen(),
+    FavoritesScreen(),
     CartScreen(),
     ProfileScreen(),
   ];
@@ -45,6 +47,11 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.search_outlined),
             selectedIcon: Icon(Icons.search),
             label: 'Browse',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.favorite_outline),
+            selectedIcon: Icon(Icons.favorite),
+            label: 'Favorites',
           ),
           NavigationDestination(
             icon: Icon(Icons.shopping_cart_outlined),

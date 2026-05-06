@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/product_provider.dart';
 import '../models/product.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -28,9 +29,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         elevation: 0,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onSurface),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.favorite_border),
-            onPressed: () {},
+          Consumer<ProductProvider>(
+            builder: (context, provider, _) {
+              final isFav = provider.isFavorite(widget.product.id);
+              return IconButton(
+                icon: Icon(
+                  isFav ? Icons.favorite : Icons.favorite_border,
+                  color: isFav ? Colors.red : null,
+                ),
+                onPressed: () {
+                  provider.toggleFavorite(widget.product.id);
+                },
+              );
+            },
           ),
         ],
       ),
