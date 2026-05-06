@@ -3,7 +3,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:provider/provider.dart';
 import '../providers/product_provider.dart';
+import '../providers/cart_provider.dart';
 import 'product_detail_screen.dart';
+import 'cart_screen.dart';
 
 class BrowseScreen extends StatefulWidget {
   const BrowseScreen({super.key});
@@ -29,6 +31,26 @@ class _BrowseScreenState extends State<BrowseScreen> {
           ),
         ),
         centerTitle: false,
+        actions: [
+          Consumer<CartProvider>(
+            builder: (context, cart, child) {
+              return Badge.count(
+                count: cart.itemCount,
+                isLabelVisible: cart.itemCount > 0,
+                child: IconButton(
+                  icon: const Icon(Icons.shopping_cart_outlined),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CartScreen()),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5)),
@@ -153,13 +175,26 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Container(
-                                        padding: const EdgeInsets.all(4),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.primary,
-                                          borderRadius: BorderRadius.circular(8),
+                                      InkWell(
+                                        onTap: () {
+                                          context.read<CartProvider>().addToCart(product);
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text('${product.name} added to cart'),
+                                              duration: const Duration(seconds: 2),
+                                              behavior: SnackBarBehavior.floating,
+                                            ),
+                                          );
+                                        },
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          child: const Icon(Icons.add, color: Colors.white, size: 18),
                                         ),
-                                        child: const Icon(Icons.add, color: Colors.white, size: 18),
                                       ),
                                     ],
                                   ),
