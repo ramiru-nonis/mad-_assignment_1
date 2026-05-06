@@ -161,17 +161,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: Hero(
-                                      tag: 'home_${product.id}',
-                                      child: CachedNetworkImage(
-                                        imageUrl: product.imageUrl,
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                        placeholder: (context, url) => Shimmer.fromColors(
-                                          baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                          highlightColor: Theme.of(context).colorScheme.surface,
-                                          child: Container(color: Theme.of(context).colorScheme.surface),
-                                        ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: product.imageUrl,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => Shimmer.fromColors(
+                                        baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                        highlightColor: Theme.of(context).colorScheme.surface,
+                                        child: Container(color: Theme.of(context).colorScheme.surface),
                                       ),
                                     ),
                                   ),

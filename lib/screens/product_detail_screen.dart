@@ -38,23 +38,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         builder: (context, constraints) {
           final isWide = constraints.maxWidth >= 800;
           
-          final heroImage = Hero(
-            tag: widget.product.id,
-            child: SizedBox(
-              height: isWide ? 500 : 350,
-              width: double.infinity,
-              child: CachedNetworkImage(
-                imageUrl: widget.product.imageUrl,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Shimmer.fromColors(
-                  baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  highlightColor: Theme.of(context).colorScheme.surface,
-                  child: Container(color: Theme.of(context).colorScheme.surface),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  child: Icon(Icons.broken_image, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                ),
+          final heroImage = SizedBox(
+            height: isWide ? 500 : 350,
+            width: double.infinity,
+            child: CachedNetworkImage(
+              imageUrl: widget.product.imageUrl,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Shimmer.fromColors(
+                baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                highlightColor: Theme.of(context).colorScheme.surface,
+                child: Container(color: Theme.of(context).colorScheme.surface),
+              ),
+              errorWidget: (context, url, error) => Container(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                child: Icon(Icons.broken_image, color: Theme.of(context).colorScheme.onSurfaceVariant),
               ),
             ),
           );
