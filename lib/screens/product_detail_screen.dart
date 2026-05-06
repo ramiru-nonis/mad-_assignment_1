@@ -60,12 +60,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
+          final orientation = MediaQuery.of(context).orientation;
           final isWide = constraints.maxWidth >= 800;
           
           final heroImage = Hero(
             tag: 'product_${widget.product.id}',
             child: SizedBox(
-              height: isWide ? 500 : 350,
+              height: orientation == Orientation.portrait ? (isWide ? 500 : 350) : 200,
               width: double.infinity,
               child: CachedNetworkImage(
                 imageUrl: widget.product.imageUrl,
