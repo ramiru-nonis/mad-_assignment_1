@@ -23,19 +23,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SearchBar(
-                hintText: 'Search products...',
-                leading: const Icon(Icons.search),
-                padding: const WidgetStatePropertyAll<EdgeInsets>(
-                  EdgeInsets.symmetric(horizontal: 16.0),
-                ),
-                onChanged: (value) {
-                  productProvider.setSearchQuery(value);
-                },
-              ),
-            ),
+            // Search bar removed as requested
+            const SizedBox(height: 8),
             Expanded(
               child: LayoutBuilder(
         builder: (context, constraints) {
