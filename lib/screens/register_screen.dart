@@ -11,16 +11,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  bool _agreedToTerms = false;
-  String? _selectedCountry;
 
-  final List<String> _countries = [
-    'Sri Lanka',
-    'United Kingdom',
-    'United States',
-    'Australia',
-    'India'
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,38 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Country',
-                  prefixIcon: Icon(Icons.public),
-                  border: OutlineInputBorder(),
-                ),
-                initialValue: _selectedCountry,
-                items: _countries.map((String country) {
-                  return DropdownMenuItem<String>(
-                    value: country,
-                    child: Text(country),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedCountry = newValue;
-                  });
-                },
-              ),
-              const SizedBox(height: 16),
-              CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                controlAffinity: ListTileControlAffinity.leading,
-                title: const Text('I agree to the Terms & Conditions'),
-                value: _agreedToTerms,
-                onChanged: (bool? value) {
-                  setState(() {
-                    _agreedToTerms = value ?? false;
-                  });
-                },
-              ),
+
               const SizedBox(height: 24),
               SizedBox(
                 height: 50,

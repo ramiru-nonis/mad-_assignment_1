@@ -21,8 +21,18 @@ class _BrowseScreenState extends State<BrowseScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cellario Lite'),
+        title: Text(
+          'Cellario Lite',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            letterSpacing: -0.5,
+          ),
+        ),
         centerTitle: false,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5)),
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -59,30 +69,55 @@ class _BrowseScreenState extends State<BrowseScreen> {
                         );
                       },
                       child: Card(
+                        elevation: 0,
                         clipBehavior: Clip.antiAlias,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5)),
                         ),
-                        elevation: 2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Hero Image Placeholder
-                            SizedBox(
-                              height: 120,
-                              width: double.infinity,
-                              child: CachedNetworkImage(
-                                imageUrl: product.imageUrl,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => Shimmer.fromColors(
-                                  baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                  highlightColor: Theme.of(context).colorScheme.surface,
-                                  child: Container(color: Theme.of(context).colorScheme.surface),
-                                ),
-                                errorWidget: (context, url, error) => Container(
-                                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                  child: Icon(Icons.broken_image, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                                ),
+                            Expanded(
+                              child: Stack(
+                                children: [
+                                  Hero(
+                                    tag: 'product_${product.id}',
+                                    child: CachedNetworkImage(
+                                      imageUrl: product.imageUrl,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => Shimmer.fromColors(
+                                        baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                        highlightColor: Theme.of(context).colorScheme.surface,
+                                        child: Container(color: Theme.of(context).colorScheme.surface),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 8,
+                                    right: 8,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withValues(alpha: 0.6),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(Icons.star, size: 12, color: Colors.amber),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            product.rating.toString(),
+                                            style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             Padding(
@@ -90,50 +125,41 @@ class _BrowseScreenState extends State<BrowseScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Category Badge
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Text(
-                                      product.category,
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  Text(
+                                    product.category.toUpperCase(),
+                                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.2,
                                     ),
                                   ),
-                                  const SizedBox(height: 6),
+                                  const SizedBox(height: 4),
                                   Text(
                                     product.name,
-                                    style: TextStyle(
+                                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Theme.of(context).colorScheme.onSurface,
                                     ),
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    product.formattedPrice,
-                                    style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 8),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Icon(Icons.star, size: 14, color: Colors.amber),
-                                      const SizedBox(width: 4),
                                       Text(
-                                        product.rating.toString(),
-                                        style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                                        product.formattedPrice,
+                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                          color: Theme.of(context).colorScheme.primary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.primary,
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(Icons.add, color: Colors.white, size: 18),
                                       ),
                                     ],
                                   ),

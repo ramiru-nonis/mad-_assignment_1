@@ -62,40 +62,44 @@ class FavoritesScreen extends StatelessWidget {
                     );
                   },
                   child: Card(
+                    elevation: 0,
                     clipBehavior: Clip.antiAlias,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5)),
                     ),
-                    elevation: 2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Stack(
-                          children: [
-                            SizedBox(
-                              height: 120,
-                              width: double.infinity,
-                              child: CachedNetworkImage(
-                                imageUrl: product.imageUrl,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => Shimmer.fromColors(
-                                  baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                                  highlightColor: Theme.of(context).colorScheme.surface,
-                                  child: Container(color: Theme.of(context).colorScheme.surface),
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              Hero(
+                                tag: 'product_${product.id}',
+                                child: CachedNetworkImage(
+                                  imageUrl: product.imageUrl,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Shimmer.fromColors(
+                                    baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                    highlightColor: Theme.of(context).colorScheme.surface,
+                                    child: Container(color: Theme.of(context).colorScheme.surface),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              top: 4,
-                              right: 4,
-                              child: IconButton(
-                                icon: const Icon(Icons.favorite, color: Colors.red),
-                                onPressed: () {
-                                  productProvider.toggleFavorite(product.id);
-                                },
+                              Positioned(
+                                top: 4,
+                                right: 4,
+                                child: IconButton(
+                                  icon: const Icon(Icons.favorite, color: Colors.red),
+                                  onPressed: () {
+                                    productProvider.toggleFavorite(product.id);
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(12.0),
@@ -103,32 +107,42 @@ class FavoritesScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                product.category,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                product.name,
-                                style: TextStyle(
+                                product.category.toUpperCase(),
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: Theme.of(context).colorScheme.onSurface,
+                                  letterSpacing: 1.2,
                                 ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                product.formattedPrice,
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
+                                product.name,
+                                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    product.formattedPrice,
+                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: const Icon(Icons.add, color: Colors.white, size: 18),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
