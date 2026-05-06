@@ -32,13 +32,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           Consumer<ProductProvider>(
             builder: (context, provider, _) {
               final isFav = provider.isFavorite(widget.product.id);
-              return IconButton(
-                icon: Icon(
-                  isFav ? Icons.favorite : Icons.favorite_border,
-                  color: isFav ? Colors.red : null,
-                ),
-                onPressed: () {
-                  provider.toggleFavorite(widget.product.id);
+              return TweenAnimationBuilder<double>(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.elasticOut,
+                tween: Tween(begin: 1.0, end: isFav ? 1.2 : 1.0),
+                builder: (context, value, child) {
+                  return Transform.scale(
+                    scale: value,
+                    child: IconButton(
+                      icon: Icon(
+                        isFav ? Icons.favorite : Icons.favorite_border,
+                        color: isFav ? Colors.red : null,
+                      ),
+                      onPressed: () {
+                        provider.toggleFavorite(widget.product.id);
+                      },
+                    ),
+                  );
                 },
               );
             },

@@ -16,7 +16,6 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = const [
-    HomeScreen(),
     BrowseScreen(),
     FavoritesScreen(),
     CartScreen(),
@@ -42,11 +41,6 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home),
             label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.search_outlined),
-            selectedIcon: Icon(Icons.search),
-            label: 'Browse',
           ),
           NavigationDestination(
             icon: Icon(Icons.favorite_outline),

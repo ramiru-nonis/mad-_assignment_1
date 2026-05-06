@@ -20,6 +20,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
     final filteredProducts = productProvider.filteredProducts;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Cellario Lite'),
+        centerTitle: false,
+      ),
       body: SafeArea(
         child: Column(
           children: [
