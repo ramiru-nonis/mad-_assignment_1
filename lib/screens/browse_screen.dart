@@ -70,11 +70,12 @@ class _BrowseScreenState extends State<BrowseScreen> {
             return OrientationBuilder(
               builder: (context, orientation) {
                 final int crossAxisCount = orientation == Orientation.portrait ? 2 : 4;
+                final double aspectRatio = orientation == Orientation.portrait ? 0.7 : 0.8;
                 return GridView.builder(
                   padding: const EdgeInsets.all(16.0),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: crossAxisCount,
-                    childAspectRatio: 0.7,
+                    childAspectRatio: aspectRatio,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
                   ),
@@ -164,7 +165,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  const SizedBox(height: 8),
+                                  const SizedBox(height: 4),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
