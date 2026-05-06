@@ -30,7 +30,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
             letterSpacing: -0.5,
           ),
         ),
-        centerTitle: false,
+        centerTitle: true,
         actions: [
           Consumer<CartProvider>(
             builder: (context, cart, child) {

@@ -40,7 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile'),
+        title: const Text('Cellario Lite'),
+        centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),

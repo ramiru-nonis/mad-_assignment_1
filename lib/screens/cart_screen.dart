@@ -17,7 +17,8 @@ class CartScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Cart'),
+        title: const Text('Cellario Lite'),
+        centerTitle: true,
         actions: [
           if (cartItems.isNotEmpty)
             IconButton(

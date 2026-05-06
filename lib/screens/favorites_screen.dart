@@ -15,7 +15,7 @@ class FavoritesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Favorites'),
+        title: const Text('Cellario Lite'),
         centerTitle: true,
       ),
       body: favorites.isEmpty
