@@ -64,7 +64,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
             Expanded(
               child: LayoutBuilder(
         builder: (context, constraints) {
-          final bool isTablet = constraints.maxWidth >= 600;
+          final bool isTablet = constraints.maxWidth >= 900;
 
           Widget buildGrid() {
             return OrientationBuilder(
