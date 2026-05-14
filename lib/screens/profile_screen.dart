@@ -1,7 +1,5 @@
+import 'package:cellario_lite/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/auth_provider.dart';
-import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -11,37 +9,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
-  late TextEditingController _addressController;
-
-  @override
-  void initState() {
-    super.initState();
-    final auth = Provider.of<AuthProvider>(context, listen: false);
-    _nameController = TextEditingController(text: auth.userName.isNotEmpty ? auth.userName : 'Chethana Nonis');
-    _emailController = TextEditingController(text: auth.userEmail.isNotEmpty ? auth.userEmail : 'chethana@example.com');
-    _phoneController = TextEditingController(text: '+94 77 123 4567');
-    _addressController = TextEditingController(text: '123 Main Street, Colombo 07');
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    super.dispose();
-  }
+  bool _pushNotifications = true;
+  bool _emailOffers = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cellario Lite'),
-        centerTitle: true,
+        title: const Text('My Profile'),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -50,119 +25,118 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             // User Avatar Section
-            CircleAvatar(
+            const CircleAvatar(
               radius: 50,
               backgroundColor: Colors.blueAccent,
-              child: Consumer<AuthProvider>(
-                builder: (context, auth, _) => Text(
-                  auth.userName.isNotEmpty ? auth.userName.substring(0, 2).toUpperCase() : 'AS',
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
+              child: Text(
+                'AS',
+                style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            Consumer<AuthProvider>(
-              builder: (context, auth, _) => Text(
-                auth.userName.isNotEmpty ? auth.userName : 'Chethana nonis',
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+            const Text(
+              'Chethana nonis',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
-            Consumer<AuthProvider>(
-              builder: (context, auth, _) => Text(
-                auth.userEmail.isNotEmpty ? auth.userEmail : 'aiden.silva@example.com',
-                style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurfaceVariant),
-              ),
+            Text(
+              'aiden.silva@example.com',
+              style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
             ),
             const SizedBox(height: 32),
 
-            const SizedBox(height: 16),
-            Form(
-              key: _formKey,
+            // Section 1: Account Info
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.grey.shade200),
+              ),
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Full Name',
-                      prefixIcon: Icon(Icons.person_outline),
-                      border: OutlineInputBorder(),
-                    ),
+                  _buildListTile('My Orders', Icons.shopping_bag_outlined),
+                  const Divider(height: 1),
+                  _buildListTile('Saved Addresses', Icons.location_on_outlined),
+                  const Divider(height: 1),
+                  _buildListTile('Payment Methods', Icons.payment_outlined),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Section 2: Preferences
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Preferences',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.grey.shade200),
+              ),
+              child: Column(
+                children: [
+                  SwitchListTile(
+                    title: const Text('Push Notifications'),
+                    secondary: const Icon(Icons.notifications_outlined),
+                    value: _pushNotifications,
+                    activeThumbColor: Theme.of(context).primaryColor,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _pushNotifications = value;
+                      });
+                    },
                   ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email Address',
-                      prefixIcon: Icon(Icons.email_outlined),
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _phoneController,
-                    decoration: const InputDecoration(
-                      labelText: 'Phone Number',
-                      prefixIcon: Icon(Icons.phone_outlined),
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.phone,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _addressController,
-                    decoration: const InputDecoration(
-                      labelText: 'Shipping Address',
-                      prefixIcon: Icon(Icons.location_on_outlined),
-                      border: OutlineInputBorder(),
-                    ),
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Profile saved successfully!')),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'Save Profile',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                  const Divider(height: 1),
+                  SwitchListTile(
+                    title: const Text('Email Offers'),
+                    secondary: const Icon(Icons.email_outlined),
+                    value: _emailOffers,
+                    activeThumbColor: Theme.of(context).primaryColor,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _emailOffers = value;
+                      });
+                    },
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
+
+            // Section 3: Support
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.grey.shade200),
+              ),
+              child: Column(
+                children: [
+                  _buildListTile('Help & Support', Icons.help_outline),
+                  const Divider(height: 1),
+                  _buildListTile('About TechStore', Icons.info_outline),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
 
             // Log Out Button
             TextButton(
-              onPressed: () async {
-                final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                await authProvider.logout();
-                if (context.mounted) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    (route) => false,
-                  );
-                }
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
               },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.red,
@@ -183,5 +157,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget _buildListTile(String title, IconData icon) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.black87),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+      trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+      onTap: () {},
+    );
+  }
 }
-
