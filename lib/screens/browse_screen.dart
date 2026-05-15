@@ -16,6 +16,15 @@ class BrowseScreen extends StatefulWidget {
 
 class _BrowseScreenState extends State<BrowseScreen> {
   @override
+  void initState() {
+    super.initState();
+    // Trigger multi-source fetch on first load
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProductProvider>().init();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
     final categories = productProvider.categories;
@@ -32,6 +41,28 @@ class _BrowseScreenState extends State<BrowseScreen> {
         ),
         centerTitle: true,
         actions: [
+          // Data source badge
+          Padding(
+            padding: const EdgeInsets.only(right: 4),
+            child: Chip(
+              avatar: Icon(
+                productProvider.dataSource == DataSource.api
+                    ? Icons.cloud_done_outlined
+                    : productProvider.dataSource == DataSource.external
+                        ? Icons.public
+                        : productProvider.dataSource == DataSource.local
+                            ? Icons.folder_outlined
+                            : Icons.history,
+                size: 14,
+              ),
+              label: Text(
+                productProvider.dataSourceLabel,
+                style: const TextStyle(fontSize: 11),
+              ),
+              padding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+            ),
+          ),
           Consumer<CartProvider>(
             builder: (context, cart, child) {
               return Badge.count(
@@ -49,7 +80,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
               );
             },
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 4),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
@@ -59,8 +90,64 @@ class _BrowseScreenState extends State<BrowseScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Search bar removed as requested
             const SizedBox(height: 8),
+
+            // ── Loading state ──
+            if (productProvider.isLoading)
+              Expanded(
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemCount: 6,
+                  itemBuilder: (context, index) => Shimmer.fromColors(
+                    baseColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    highlightColor: Theme.of(context).colorScheme.surface,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+
+            // ── Error state ──
+            else if (productProvider.hasError && filteredProducts.isEmpty)
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.wifi_off,
+                          size: 64,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant),
+                      const SizedBox(height: 16),
+                      Text(
+                        productProvider.errorMessage,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
+                      ),
+                      const SizedBox(height: 24),
+                      FilledButton.icon(
+                        onPressed: () => productProvider.fetchProducts(),
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+
+            // ── Loaded state ──
+            else
             Expanded(
               child: LayoutBuilder(
         builder: (context, constraints) {

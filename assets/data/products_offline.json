@@ -1,0 +1,74 @@
+[
+  {
+    "id": "p1",
+    "name": "iPhone 16 Pro",
+    "price": 999.00,
+    "category": "Smartphones",
+    "rating": 4.8,
+    "description": "The latest iPhone with advanced camera system, titanium design, and A18 Pro chip.",
+    "imageUrl": "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=600"
+  },
+  {
+    "id": "p2",
+    "name": "Samsung Galaxy S25 Ultra",
+    "price": 1199.00,
+    "category": "Smartphones",
+    "rating": 4.9,
+    "description": "Ultimate Android experience with S-Pen, quad camera setup, and Snapdragon 8 Gen 4.",
+    "imageUrl": "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=600"
+  },
+  {
+    "id": "p3",
+    "name": "MacBook Air M3",
+    "price": 1099.00,
+    "category": "Laptops",
+    "rating": 4.9,
+    "description": "Supercharged by M3, incredibly thin and light. Up to 18 hours of battery life.",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=600"
+  },
+  {
+    "id": "p4",
+    "name": "Dell XPS 15",
+    "price": 1499.00,
+    "category": "Laptops",
+    "rating": 4.7,
+    "description": "A perfect balance of power and portability with a stunning OLED display.",
+    "imageUrl": "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=600"
+  },
+  {
+    "id": "p5",
+    "name": "iPad Pro 13\"",
+    "price": 1299.00,
+    "category": "Tablets",
+    "rating": 4.8,
+    "description": "The ultimate iPad experience with M4 chip, OLED display, and all-day battery life.",
+    "imageUrl": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=600"
+  },
+  {
+    "id": "p6",
+    "name": "Sony WH-1000XM5",
+    "price": 398.00,
+    "category": "Audio",
+    "rating": 4.8,
+    "description": "Industry-leading noise cancellation, exceptional sound quality, and comfortable design.",
+    "imageUrl": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=600"
+  },
+  {
+    "id": "p7",
+    "name": "AirPods Pro 2",
+    "price": 249.00,
+    "category": "Audio",
+    "rating": 4.9,
+    "description": "Rich, high-quality audio and magic AirPods experience with next-level active noise cancellation.",
+    "imageUrl": "https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?q=80&w=600"
+  },
+  {
+    "id": "p8",
+    "name": "Logitech MX Master 3S",
+    "price": 99.00,
+    "category": "Accessories",
+    "rating": 4.8,
+    "description": "An iconic mouse remastered. Feel every moment of your workflow with even more precision.",
+    "imageUrl": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=600"
+  }
+]

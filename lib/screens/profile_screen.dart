@@ -11,177 +11,195 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
-  late TextEditingController _addressController;
-
-  @override
-  void initState() {
-    super.initState();
-    final auth = Provider.of<AuthProvider>(context, listen: false);
-    _nameController = TextEditingController(text: auth.userName.isNotEmpty ? auth.userName : 'Chethana Nonis');
-    _emailController = TextEditingController(text: auth.userEmail.isNotEmpty ? auth.userEmail : 'chethana@example.com');
-    _phoneController = TextEditingController(text: '+94 77 123 4567');
-    _addressController = TextEditingController(text: '123 Main Street, Colombo 07');
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    super.dispose();
-  }
+  bool _pushNotifications = true;
+  bool _emailOffers = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cellario Lite'),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // User Avatar Section
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.blueAccent,
-              child: Consumer<AuthProvider>(
-                builder: (context, auth, _) => Text(
-                  auth.userName.isNotEmpty ? auth.userName.substring(0, 2).toUpperCase() : 'AS',
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onPrimary,
+    return Consumer<AuthProvider>(
+      builder: (context, auth, _) {
+        final initials = auth.userName.isNotEmpty
+            ? auth.userName
+                .split(' ')
+                .where((w) => w.isNotEmpty)
+                .map((w) => w[0].toUpperCase())
+                .take(2)
+                .join()
+            : 'U';
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('My Profile'),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // ── Avatar ──
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  child: Text(
+                    initials,
+                    style: const TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Consumer<AuthProvider>(
-              builder: (context, auth, _) => Text(
-                auth.userName.isNotEmpty ? auth.userName : 'Chethana nonis',
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Consumer<AuthProvider>(
-              builder: (context, auth, _) => Text(
-                auth.userEmail.isNotEmpty ? auth.userEmail : 'aiden.silva@example.com',
-                style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurfaceVariant),
-              ),
-            ),
-            const SizedBox(height: 32),
-
-            const SizedBox(height: 16),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Full Name',
-                      prefixIcon: Icon(Icons.person_outline),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email Address',
-                      prefixIcon: Icon(Icons.email_outlined),
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _phoneController,
-                    decoration: const InputDecoration(
-                      labelText: 'Phone Number',
-                      prefixIcon: Icon(Icons.phone_outlined),
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.phone,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _addressController,
-                    decoration: const InputDecoration(
-                      labelText: 'Shipping Address',
-                      prefixIcon: Icon(Icons.location_on_outlined),
-                      border: OutlineInputBorder(),
-                    ),
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Profile saved successfully!')),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'Save Profile',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Log Out Button
-            TextButton(
-              onPressed: () async {
-                final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                await authProvider.logout();
-                if (context.mounted) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    (route) => false,
-                  );
-                }
-              },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 32,
+                const SizedBox(height: 16),
+                Text(
+                  auth.userName.isNotEmpty ? auth.userName : 'Guest',
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-              ),
-              child: const Text(
-                'Log Out',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+                const SizedBox(height: 4),
+                Text(
+                  auth.userEmail.isNotEmpty
+                      ? auth.userEmail
+                      : 'Not logged in',
+                  style:
+                      TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                ),
+                const SizedBox(height: 32),
+
+                // ── Account Info ──
+                Card(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.grey.shade200),
+                  ),
+                  child: Column(
+                    children: [
+                      _buildListTile('My Orders', Icons.shopping_bag_outlined),
+                      const Divider(height: 1),
+                      _buildListTile(
+                          'Saved Addresses', Icons.location_on_outlined),
+                      const Divider(height: 1),
+                      _buildListTile(
+                          'Payment Methods', Icons.payment_outlined),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // ── Preferences ──
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Preferences',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Card(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.grey.shade200),
+                  ),
+                  child: Column(
+                    children: [
+                      SwitchListTile(
+                        title: const Text('Push Notifications'),
+                        secondary: const Icon(Icons.notifications_outlined),
+                        value: _pushNotifications,
+                        activeThumbColor: Theme.of(context).colorScheme.primary,
+                        onChanged: (bool value) =>
+                            setState(() => _pushNotifications = value),
+                      ),
+                      const Divider(height: 1),
+                      SwitchListTile(
+                        title: const Text('Email Offers'),
+                        secondary: const Icon(Icons.email_outlined),
+                        value: _emailOffers,
+                        activeThumbColor: Theme.of(context).colorScheme.primary,
+                        onChanged: (bool value) =>
+                            setState(() => _emailOffers = value),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // ── Support ──
+                Card(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.grey.shade200),
+                  ),
+                  child: Column(
+                    children: [
+                      _buildListTile('Help & Support', Icons.help_outline),
+                      const Divider(height: 1),
+                      _buildListTile('About Cellario', Icons.info_outline),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // ── Logout Button ──
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: auth.isLoading
+                        ? null
+                        : () async {
+                            await auth.logout();
+                            if (context.mounted) {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const LoginScreen()),
+                                (route) => false,
+                              );
+                            }
+                          },
+                    icon: auth.isLoading
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.logout, color: Colors.red),
+                    label: const Text(
+                      'Log Out',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      side: const BorderSide(color: Colors.red),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40),
+              ],
             ),
-            const SizedBox(height: 40),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
+  Widget _buildListTile(String title, IconData icon) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.black87),
+      title:
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+      trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+      onTap: () {},
+    );
+  }
 }
-

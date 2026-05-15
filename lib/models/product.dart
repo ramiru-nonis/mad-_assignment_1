@@ -22,8 +22,69 @@ class Product {
   });
 
   String get formattedPrice => '\$${price.toStringAsFixed(2)}';
+
+  /// Parse a product from the SSP API response JSON.
+  factory Product.fromJson(Map<String, dynamic> json) {
+    // API uses brand + model_name, local JSON uses name directly
+    final name = json.containsKey('brand')
+        ? '${json['brand']} ${json['model_name']}'
+        : (json['name'] as String? ?? 'Unknown');
+
+    // Image: API returns a nested main_image object or images list
+    String imageUrl = '';
+    if (json['main_image'] != null) {
+      imageUrl = (json['main_image']['image_path'] as String?) ?? '';
+    } else if (json['images'] != null && (json['images'] as List).isNotEmpty) {
+      imageUrl = (json['images'][0]['image_path'] as String?) ?? '';
+    } else if (json['imageUrl'] != null) {
+      imageUrl = json['imageUrl'] as String;
+    }
+
+    // Assign a subtle color based on category for the card background
+    final category = (json['category'] as String?) ?? 'Other';
+    final color = _categoryColor(category);
+
+    return Product(
+      id: json['id'].toString(),
+      name: name,
+      price: double.tryParse(json['price'].toString()) ?? 0.0,
+      category: category,
+      rating: double.tryParse(json['rating']?.toString() ?? '4.5') ?? 4.5,
+      description: (json['description'] as String?) ?? '',
+      color: color,
+      imageUrl: imageUrl,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'price': price,
+        'category': category,
+        'rating': rating,
+        'description': description,
+        'imageUrl': imageUrl,
+      };
+
+  static Color _categoryColor(String category) {
+    switch (category.toLowerCase()) {
+      case 'smartphones':
+        return Colors.blueGrey.shade100;
+      case 'laptops':
+        return Colors.grey.shade300;
+      case 'tablets':
+        return Colors.indigo.shade100;
+      case 'audio':
+        return Colors.teal.shade100;
+      case 'accessories':
+        return Colors.blueAccent.shade100;
+      default:
+        return Colors.grey.shade200;
+    }
+  }
 }
 
+// Kept as local fallback if all network/asset sources fail during development
 final List<Product> dummyProducts = [
   Product(
     id: 'p1',
@@ -37,72 +98,12 @@ final List<Product> dummyProducts = [
   ),
   Product(
     id: 'p2',
-    name: 'Samsung Galaxy S25 Ultra',
-    price: 1199.00,
-    category: 'Smartphones',
-    rating: 4.9,
-    description: 'Ultimate Android experience with S-Pen, quad camera setup, and Snapdragon 8 Gen 4.',
-    color: Colors.teal.shade100,
-    imageUrl: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=600',
-  ),
-  Product(
-    id: 'p3',
     name: 'MacBook Air M3',
     price: 1099.00,
     category: 'Laptops',
     rating: 4.9,
-    description: 'Supercharged by M3, incredibly thin and light. Up to 18 hours of battery life.',
+    description: 'Supercharged by M3, incredibly thin and light.',
     color: Colors.grey.shade300,
     imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=600',
-  ),
-  Product(
-    id: 'p4',
-    name: 'Dell XPS 15',
-    price: 1499.00,
-    category: 'Laptops',
-    rating: 4.7,
-    description: 'A perfect balance of power and portability with a stunning OLED display.',
-    color: Colors.blueAccent.shade100,
-    imageUrl: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=600',
-  ),
-  Product(
-    id: 'p5',
-    name: 'iPad Pro 13"',
-    price: 1299.00,
-    category: 'Tablets',
-    rating: 4.8,
-    description: 'The ultimate iPad experience with M4 chip, OLED display, and all-day battery life.',
-    color: Colors.indigo.shade100,
-    imageUrl: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=600',
-  ),
-  Product(
-    id: 'p6',
-    name: 'Sony WH-1000XM5',
-    price: 398.00,
-    category: 'Audio',
-    rating: 4.8,
-    description: 'Industry-leading noise cancellation, exceptional sound quality, and comfortable design.',
-    color: Colors.black87,
-    imageUrl: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=600',
-  ),
-  Product(
-    id: 'p7',
-    name: 'AirPods Pro 2',
-    price: 249.00,
-    category: 'Audio',
-    rating: 4.9,
-    description: 'Rich, high-quality audio and magic AirPods experience with next-level active noise cancellation.',
-    color: Colors.grey.shade200,
-    imageUrl: 'https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?q=80&w=600',
-  ),
-  Product(
-    id: 'p8',
-    name: 'Logitech MX Master 3S',
-    price: 99.00,
-    category: 'Accessories',
-    rating: 4.8,
-    description: 'An iconic mouse remastered. Feel every moment of your workflow with even more precision.',
-    color: Colors.blueGrey.shade200,
-    imageUrl: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=600',
   ),
 ];
